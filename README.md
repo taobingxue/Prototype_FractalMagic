@@ -15,12 +15,14 @@ Blank
 
 ### Design
 
-Blank
+Main function will look like a magic circle in center. On the right are functions (represented as elements). On the left are parameters (represented as shapes)
+Player can drag the shape into an element to make a function. Player can also duplicate a function and put it into itself/another function to create recursive effect.
+Once the function has been set up, player can drop it into the magic circle to watch how fractal grows.
 
 ### Todos
 
  - Environment set up
- - Gesture detect
+ - Gesture detection
  - Functional
  - Fractal Bloom
  - ...
