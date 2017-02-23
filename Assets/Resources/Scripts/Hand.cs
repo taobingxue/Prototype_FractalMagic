@@ -20,6 +20,9 @@ public class Hand : MonoBehaviour {
 	void Update () {
         update_active_element();
         update_status();
+        if (check_shoot()) {
+            shoot();
+        }
         /*
         Debug.Log("A" + OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger));
         Debug.Log("B" + OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger));
@@ -33,7 +36,6 @@ public class Hand : MonoBehaviour {
     // Status Maintain and Operation Trigger
     void update_status() {
         bool status = check_grab();
-        //Debug.Log("L" + OVRInput.Get(OVRInput.Button.SecondaryHandTrigger));
 
         trigger_grab(status);
         trigger_release(status);
@@ -43,11 +45,14 @@ public class Hand : MonoBehaviour {
     bool check_grab() {
         return OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
     }
+    bool check_shoot()
+    {
+        return OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger);
+    }
 
     // trigger operation
     void trigger_grab(bool status) {
         if (last_status == false && status && active_element != null) {
-            Debug.Log("Grab!");
             MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
             GameObject new_obj = Instantiate(MagicElements.instance.valid_elements[active_element_function.idx].model_prefab) as GameObject;
             new_obj.transform.parent = transform;
@@ -111,5 +116,16 @@ public class Hand : MonoBehaviour {
                 active_element.GetComponent<MagicFunction>().select();
             }
         }
+    }
+
+    // Shoot function to clean up function
+    void shoot() {
+        if (active_element == null) return;
+        MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
+        if (!MagicElements.instance.valid_elements[active_element_function.idx].is_function) {
+            Debug.Log("You are shooting an element not a function!");
+            return;
+        }
+        active_element_function.clean_function();
     }
 }
