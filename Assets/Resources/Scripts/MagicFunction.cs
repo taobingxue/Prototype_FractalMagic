@@ -63,6 +63,14 @@ public class MagicFunction : MonoBehaviour {
         add_spin_elements(ele.spin_prefab);
         ele_count += 1;
     }
+
+    public void clean_function() {
+        clear_spin_elements();
+        for (int i = 0; i < Consts.ele_spin_max_elements; i++) {
+            function_list[i] = -1;
+        }
+        ele_count = 0;
+    }
     
     // Select Ring
     public void select() {
