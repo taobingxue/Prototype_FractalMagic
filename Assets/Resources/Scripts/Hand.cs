@@ -7,13 +7,12 @@ public class Hand : MonoBehaviour {
     public GameObject[] magic_element_objs;
     bool last_status = false;
     public GameObject active_element = null;
-
+    public GameObject fractal_generator;
     GameObject grabed = null;
     int grabed_idx = -1;
 
 	// Use this for initialization
 	void Start () {
-       
 	}
 	
 	// Update is called once per frame
@@ -69,6 +68,10 @@ public class Hand : MonoBehaviour {
                 }
                 Debug.Log("magic_spell" + a);
                 // TODO: call bloom
+                // need to cleanup former bloom
+                fractal_generator.GetComponent<Fractal>().setFractalStartPosition(transform.position);
+                fractal_generator.GetComponent<Fractal>().cleanUpFractals();
+                fractal_generator.GetComponent<Fractal>().generateFractalsFromIndices(magic_spell);
 
             } else if (active_element == null) {
                 // release to the sky

@@ -43,6 +43,7 @@ public class Fractal : MonoBehaviour {
 	public int maxDepth;
 	public float childScale;
 	public float spawnProbability;
+	public int[] shapeIndices;
 
 	private int depth;
 	private Material[,] materials;
@@ -65,9 +66,13 @@ public class Fractal : MonoBehaviour {
 		if (materials == null) {
 			InitializeMaterials();
 		}
+
+		if (depth != 0) {
+			generateFractalsFromIndices(shapeIndices);
+		}
 		// decide on mesh based on level
-		int[] test = {0, 0, 1};
-		generateFractalsFromIndices(test);
+		// int[] test = {0, 0, 1};
+		// generateFractalsFromIndices(test);
 		//int meshIndex = Random.Range(0, meshes.Length);
 
 		// int meshIndex = depth % meshes.Length;
@@ -95,7 +100,9 @@ public class Fractal : MonoBehaviour {
 		for (int i = 0; i < childDirections.Length; i++) {
 			if (Random.value < spawnProbability) {
 				yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
-				new GameObject("Fractal Child").AddComponent<Fractal>().
+				GameObject FractalChild = new GameObject("Fractal Child");
+				FractalChild.tag = "FractalChild";
+				FractalChild.AddComponent<Fractal>().
 					Initialize(this, i);
 			}
 		}
@@ -104,6 +111,7 @@ public class Fractal : MonoBehaviour {
 	private void Initialize (Fractal parent, int childIndex) {
 		// if (childIndex > childDirections.Length-1)
 		// 	return;
+		shapeIndices = parent.shapeIndices;
 		meshes = parent.meshes;
 		materials = parent.materials;
 		maxDepth = parent.maxDepth;
@@ -124,7 +132,22 @@ public class Fractal : MonoBehaviour {
 		return childDirections;
 	}
 
+	public void cleanUpFractals() {
+		//get all fractals and delete
+		Destroy(gameObject.GetComponent<MeshFilter>());
+		Destroy(gameObject.GetComponent<MeshRenderer>());
+		GameObject[] FractalsToDelete = GameObject.FindGameObjectsWithTag("FractalChild");
+
+		for (int i = 0; i < FractalsToDelete.Length; i++) {
+			Destroy(FractalsToDelete[i]);
+		}
+	}
+
 	public void generateFractalsFromIndices(int[] shapeIndices) {
+		if (depth == 0) {
+			this.shapeIndices = shapeIndices;
+		}
+
 		if (depth >= shapeIndices.Length) {
 			Debug.Log("Either too deep or shapeIndices Length error");
 			return;
@@ -135,6 +158,13 @@ public class Fractal : MonoBehaviour {
 			return;
 		}
 		int meshIndex = shapeIndices[depth];
+
+		// if (meshes[meshIndex] == null) {
+		// 	Debug.Log("Cannot get this mesh");
+		// 	return;
+		// }
+
+
 		gameObject.AddComponent<MeshFilter>().mesh =
 			meshes[meshIndex];
 		gameObject.AddComponent<MeshRenderer>().material =
@@ -147,11 +177,16 @@ public class Fractal : MonoBehaviour {
 		}
 
 		for (int i = 0; i < childDirections.Length; i++) {
-			Debug.Log(childDirections[i]);
+			//Debug.Log(childDirections[i]);
 			//Debug.DrawLine(Vector3.zero, childDirections[i], Color.red, 100);
 		}
 		if (depth < maxDepth) {
 			StartCoroutine(CreateChildren());
 		}
+	}
+
+	public void setFractalStartPosition(Vector3 position) {
+		transform.position = position;
+		return;
 	}
 }
