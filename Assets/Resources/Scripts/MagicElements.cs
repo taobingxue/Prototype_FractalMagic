@@ -23,10 +23,14 @@ public class MagicElements : MonoBehaviour
 {
     public MagicElement[] valid_elements;
     public int main_function_idx;
+
     public GameObject selected;
     public static MagicElements instance;
+    public bool debugging;
 
     public int max_expand;
+
+    int count;
 
     public void Awake()
     {
@@ -44,27 +48,28 @@ public class MagicElements : MonoBehaviour
 
     }
 
-    int[] recurrsive_expand(int[] res, int expand_idx, int count) {
-        string m = "";
-        for (int i = 0; i < 10; ++i) { m += " " + res[i];}
-        Debug.Log("res = " + m);
-        Debug.Log("expand_idx = " + expand_idx);
-        Debug.Log("count = " + count);
+    int[] recurrsive_expand(int[] res, int expand_idx) {
+        if (debugging) {
+            string m = "";
+            for (int i = 0; i < 10; ++i) { m += " " + res[i]; }
+            Debug.Log("res = " + m);
+            Debug.Log("expand_idx = " + expand_idx);
+            Debug.Log("count = " + count);
+        }
+        count += 1;
         if (count >= max_expand) {
             return res;
         }
         if (!valid_elements[expand_idx].is_function) {
-            Debug.Log("A");
             res[10] += 1;
             res[res[10]] = expand_idx;
         } else {
-            Debug.Log("B");
             int[] expand_list = valid_elements[expand_idx].instance.GetComponent<MagicFunction>().get_function_list();
             for (int i = 0; i < Consts.ele_spin_max_elements; i++) {
                 if (expand_list[i] < 0) {
                     break;
                 }
-                res = recurrsive_expand(res, expand_list[i], count + 1);
+                res = recurrsive_expand(res, expand_list[i]);
                 if (res[10] == 9) break;
             }
         }
@@ -77,8 +82,9 @@ public class MagicElements : MonoBehaviour
             res[i] = -1;
         }
         res[10] = -1;
-        
-        return recurrsive_expand(res, main_function_idx, 0);
+
+        count = 0;
+        return recurrsive_expand(res, main_function_idx);
     }
 }
 
