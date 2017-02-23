@@ -21,10 +21,8 @@ Once the function has been set up, player can drop it into the magic circle to w
 
 ### Todos
 
- - Environment set up
- - Gesture detection
- - Functional
- - Fractal Bloom
+ - Fractal Bloom and Merge
+ - Detect and remove empty function for function expand
  - ...
 
 ### Credit
