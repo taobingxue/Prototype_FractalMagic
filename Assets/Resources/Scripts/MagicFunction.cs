@@ -15,8 +15,8 @@ public class MagicFunction : MonoBehaviour {
     float angle = 0;
 
     // selected present
-    bool is_selected = false;
-    GameObject selected_ring;   
+    bool[] is_selected = { false, false };
+    GameObject[] selected_ring = { null, null };   
 
     // Use this for initialization
     void Start()
@@ -73,27 +73,27 @@ public class MagicFunction : MonoBehaviour {
     }
     
     // Select Ring
-    public void select() {
-        if (is_selected) {
+    public void select(int hand_idx) {
+        if (is_selected[hand_idx]) {
             Debug.Log("Reselect:" + this.name);
             return ;
         }
 
-        selected_ring = Instantiate(MagicElements.instance.selected) as GameObject;
-        selected_ring.transform.parent = transform;
-        selected_ring.transform.localPosition = Vector3.zero;
-        selected_ring.transform.localScale = Vector3.one * 0.5f;
-        is_selected = true;
+        selected_ring[hand_idx] = Instantiate(MagicElements.instance.selected[hand_idx]) as GameObject;
+        selected_ring[hand_idx].transform.parent = transform;
+        selected_ring[hand_idx].transform.localPosition = Vector3.zero;
+        selected_ring[hand_idx].transform.localScale = Vector3.one * 0.5f;
+        is_selected[hand_idx] = true;
     }
 
-    public void unselect() {
-        if (!is_selected) {
+    public void unselect(int hand_idx) {
+        if (!is_selected[hand_idx]) {
             Debug.Log("unselect not select:" + this.name);
             return;
         }
 
-        Destroy(selected_ring);
-        is_selected = false;
+        Destroy(selected_ring[hand_idx]);
+        is_selected[hand_idx] = false;
     }
 
     // Spin Elements

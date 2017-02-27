@@ -24,7 +24,7 @@ public class MagicElements : MonoBehaviour
     public MagicElement[] valid_elements;
     public int main_function_idx;
 
-    public GameObject selected;
+    public GameObject[] selected;
     public static MagicElements instance;
     public bool debugging;
 

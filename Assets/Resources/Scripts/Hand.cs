@@ -6,7 +6,7 @@ public class Hand : MonoBehaviour {
 
     public GameObject[] magic_element_objs;
     bool last_status = false;
-    public GameObject active_element = null;
+    GameObject active_element = null;
     public GameObject fractal_generator;
     GameObject grabed = null;
     int grabed_idx = -1;
@@ -19,9 +19,6 @@ public class Hand : MonoBehaviour {
 	void Update () {
         update_active_element();
         update_status();
-        if (check_shoot()) {
-            shoot();
-        }
         /*
         Debug.Log("A" + OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger));
         Debug.Log("B" + OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger));
@@ -43,10 +40,6 @@ public class Hand : MonoBehaviour {
 
     bool check_grab() {
         return OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
-    }
-    bool check_shoot()
-    {
-        return OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger);
     }
 
     // trigger operation
@@ -111,24 +104,13 @@ public class Hand : MonoBehaviour {
         {
             if (active_element != null)
             {
-                active_element.GetComponent<MagicFunction>().unselect();
+                active_element.GetComponent<MagicFunction>().unselect(0);
             }
             active_element = target;
             if (active_element != null)
             {
-                active_element.GetComponent<MagicFunction>().select();
+                active_element.GetComponent<MagicFunction>().select(0);
             }
         }
-    }
-
-    // Shoot function to clean up function
-    void shoot() {
-        if (active_element == null) return;
-        MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
-        if (!MagicElements.instance.valid_elements[active_element_function.idx].is_function) {
-            Debug.Log("You are shooting an element not a function!");
-            return;
-        }
-        active_element_function.clean_function();
     }
 }
