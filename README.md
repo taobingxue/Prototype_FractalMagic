@@ -21,8 +21,8 @@ Once the function has been set up, player can drop it into the magic circle to w
 
 ### Todos
 
- - Fractal Bloom and Merge
- - Detect and remove empty function for function expand
+ - Visual the calling process
+ - Color the instanced command
  - ...
 
 ### Credit
