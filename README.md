@@ -1,8 +1,7 @@
 # Prototype Fractal Magic
 
-[![Wonderland Logo](http://www.etc.cmu.edu/wp-content/uploads/2017/01/wonderland_logo.png)](http://www.etc.cmu.edu/projects/wonderland/)
+[![Wonderland Logo](examples/fractal.jpg)](http://www.etc.cmu.edu/projects/wonderland/)
 
-Blank
 
 ### Tech
 
