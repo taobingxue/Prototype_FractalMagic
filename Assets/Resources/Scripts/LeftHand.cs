@@ -7,8 +7,6 @@ public class LeftHand : MonoBehaviour
 
     public GameObject[] magic_element_objs;
     GameObject active_element = null;
-    GameObject grabed = null;
-    int grabed_idx = -1;
 
     // Use this for initialization
     void Start()
