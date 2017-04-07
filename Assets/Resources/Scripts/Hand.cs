@@ -29,6 +29,9 @@ public class Hand : MonoBehaviour {
         Debug.Log("E" + OVRInput.Get(OVRInput.Button.SecondaryHandTrigger));
         Debug.Log("F" + OVRInput.Get(OVRInput.Button.PrimaryHandTrigger));
         */
+		if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick) || OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick)) {
+			fractal_generator.clean_up();
+		}
     }
 
     // Status Maintain and Operation Trigger

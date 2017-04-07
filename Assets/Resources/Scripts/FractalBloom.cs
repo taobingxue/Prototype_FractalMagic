@@ -46,10 +46,11 @@ public class FractalBloom : MonoBehaviour {
         
 	}
 
-    void clean_up() {
+    public void clean_up() {
         if (last_obj != null) {
             Destroy(last_obj);
         }
+		last_obj = null;
     }
 
     public GameObject bloom(Vector3 pos, int[] spell) {
