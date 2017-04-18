@@ -35,6 +35,13 @@ public class MagicElements : MonoBehaviour
     public void Awake()
     {
         instance = this;
+
+        int l = valid_elements.Length;
+        for (int i = 0; i < l; ++i) {
+            if (valid_elements[i].instance != null) {
+                valid_elements[i].instance.GetComponent<MagicFunction>().idx = i;
+            }
+        }
     }
     // Use this for initialization
     void Start()
