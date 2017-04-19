@@ -68,8 +68,7 @@ public class FractalBloom : MonoBehaviour {
     }
 
     IEnumerator co_bloom(GameObject obj, Vector3 pos, int[] spell) {
-		Debug.Log('A');
-		
+
         int l = spell.Length;
         FractalObj[] q = null;
         int last_color_idx = Random.Range(1, lc);
@@ -81,18 +80,16 @@ public class FractalBloom : MonoBehaviour {
 			q = grow_cube(tmp, obj, colors[last_color_idx]);
 		}
 		
-		Debug.Log('B');
-        Debug.Log("c = " + last_color_idx);
         for (int i = 1; i < level; ++i) {
             yield return new WaitForSeconds(delay);
             if (spell[i] == -1) break;
-			Debug.Log("len(q) = " + q.Length);
+
             int new_idx = Random.Range(1, lc);
             while (new_idx == last_color_idx) {
                 new_idx = Random.Range(1, lc);
             }
             last_color_idx = new_idx;
-            Debug.Log("c = " + last_color_idx);
+
             q = create_layer(q, spell[i], obj, colors[last_color_idx]);
         }
     }
@@ -133,11 +130,6 @@ public class FractalBloom : MonoBehaviour {
         Vector3 norm = Vector3.Cross(patch.vecs[1] - patch.vecs[0], patch.vecs[2] - patch.vecs[1]);
         Vector3 h_norm = norm.normalized * patch.r * 0.816496580927726f; // sqrt(6)/3
 
-        /*
-        vertices[0] = patch.vecs[1];
-        vertices[1] = (patch.vecs[0] + patch.vecs[2] + patch.vecs[1]) * (1 / 3.0f) + h_norm;
-        vertices[2] = patch.vecs[0];
-        */
         //under
         vertices[0] = patch.vecs[2];
         vertices[1] = patch.vecs[1];

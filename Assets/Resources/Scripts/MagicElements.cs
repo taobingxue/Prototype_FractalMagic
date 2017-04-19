@@ -40,6 +40,7 @@ public class MagicElements : MonoBehaviour
         for (int i = 0; i < l; ++i) {
             if (valid_elements[i].instance != null) {
                 valid_elements[i].instance.GetComponent<MagicFunction>().idx = i;
+                valid_elements[i].idx = i;
             }
         }
     }

@@ -21,14 +21,7 @@ public class Hand : MonoBehaviour {
 	void Update () {
         update_active_element();
         update_status();
-        /*
-        Debug.Log("A" + OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger));
-        Debug.Log("B" + OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger));
-        Debug.Log("C" + OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger));
-        Debug.Log("D" + OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger));
-        Debug.Log("E" + OVRInput.Get(OVRInput.Button.SecondaryHandTrigger));
-        Debug.Log("F" + OVRInput.Get(OVRInput.Button.PrimaryHandTrigger));
-        */
+
 		if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick) || OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick)) {
 			fractal_generator.clean_up();
 		}
@@ -70,10 +63,9 @@ public class Hand : MonoBehaviour {
                     a += " " + magic_spell[i];
                 }
                 Debug.Log("magic_spell" + a);
-                // TODO: call bloom
-                // need to cleanup former bloom
 
                 /*
+                 *  call more general but not exact fractal with fractal class instead of fractal bloom
                 fractal_generator.GetComponent<Fractal>().setFractalStartPosition(transform.position);
                 fractal_generator.GetComponent<Fractal>().cleanUpFractals();
                 fractal_generator.GetComponent<Fractal>().generateFractalsFromIndices(magic_spell);
@@ -83,7 +75,6 @@ public class Hand : MonoBehaviour {
             } else if (active_element == null) {
                 // release to the sky
                 Debug.Log("You release it to nothing!");
-                // TODO: call destroy partical
             } else {
                 // release to a function
                 MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
