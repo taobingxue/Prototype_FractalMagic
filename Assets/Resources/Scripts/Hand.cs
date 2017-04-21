@@ -37,7 +37,7 @@ public class Hand : MonoBehaviour {
     }
 
     bool check_grab() {
-        return OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
+        return OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
     }
 
     // trigger operation

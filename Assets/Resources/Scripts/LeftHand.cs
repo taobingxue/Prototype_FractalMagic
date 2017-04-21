@@ -25,7 +25,7 @@ public class LeftHand : MonoBehaviour
 
     bool check_shoot()
     {
-        return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
+        return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger);
     }
 
     // Active Element Maintain
