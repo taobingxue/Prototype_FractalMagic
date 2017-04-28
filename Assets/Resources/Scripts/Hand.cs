@@ -23,6 +23,7 @@ public class Hand : MonoBehaviour {
         update_status();
 
 		if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick) || OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick)) {
+            SoundAudio.instance.playRemove();
 			fractal_generator.clean_up();
 		}
     }
@@ -43,6 +44,7 @@ public class Hand : MonoBehaviour {
     // trigger operation
     void trigger_grab(bool status) {
         if (last_status == false && status && active_element != null) {
+            SoundAudio.instance.playGrab();
             MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
             GameObject new_obj = Instantiate(MagicElements.instance.valid_elements[active_element_function.idx].model_prefab) as GameObject;
             new_obj.transform.parent = transform;
@@ -79,7 +81,9 @@ public class Hand : MonoBehaviour {
                 // release to a function
                 MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
                 active_element_function.extend_function(MagicElements.instance.valid_elements[grabed_idx]);
+                SoundAudio.instance.playRelease();
             }
+
             Destroy(grabed);
             grabed = null;
         }

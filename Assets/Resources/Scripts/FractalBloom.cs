@@ -72,6 +72,7 @@ public class FractalBloom : MonoBehaviour {
         int l = spell.Length;
         FractalObj[] q = null;
         int last_color_idx = Random.Range(1, lc);
+        SoundAudio.instance.playSyllable(0);
         if (spell[0] == TRIANGLE) {
 			FractalObj tmp = create_triangle(pos, R);
             q = grow_triangle(tmp, obj, colors[last_color_idx]);
@@ -83,6 +84,7 @@ public class FractalBloom : MonoBehaviour {
         for (int i = 1; i < level; ++i) {
             yield return new WaitForSeconds(delay);
             if (spell[i] == -1) break;
+            SoundAudio.instance.playSyllable(i);
 
             int new_idx = Random.Range(1, lc);
             while (new_idx == last_color_idx) {
