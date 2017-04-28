@@ -72,6 +72,6 @@ public class LeftHand : MonoBehaviour
             return;
         }
         active_element_function.clean_function();
-        SoundAudio.instance.playRemove();
+        SoundAudio.instance.playRemove(transform.position);
     }
 }

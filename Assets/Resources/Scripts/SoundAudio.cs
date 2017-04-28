@@ -5,10 +5,12 @@ using UnityEngine;
 public class SoundAudio : MonoBehaviour {
 
     public static SoundAudio instance;
-    AudioSource source;
 
     public AudioClip[] clips;
-    public AudioClip grab, release, remove;
+    public AudioClip grab, release, remove, magic;
+
+    float t;
+    GameObject magicObj;
 
     private void Awake() {
         if (instance == null)
@@ -18,37 +20,62 @@ public class SoundAudio : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+
+        t = 0;
     }
     // Use this for initialization
     void Start () {
-        source = GetComponent<AudioSource>();
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        t += Time.deltaTime;
+        if (t > 5) {
+            t = 0;
+            for (int i = transform.childCount - 1; i >= 0; --i) {
+                GameObject obj = transform.GetChild(i).gameObject;
+                if (!obj.GetComponent<AudioSource>().isPlaying) {
+                    Destroy(obj);
+                }
+            }
+        }
 	}
 
-    public void playSyllable(int idx = 0) {
+    public void playSyllable(int idx, Vector3 pos) {
         if (idx >= clips.Length) {
-            return;
+            idx %= clips.Length;
         }
-        play(clips[idx]);
+        play(clips[idx], pos);
     }
 
-    public void playGrab() {
-        play(grab);
+    public void playGrab(Vector3 pos) {
+        play(grab, pos);
     }
-    public void playRelease() {
-        play(release);
+    public void playRelease(Vector3 pos) {
+        play(release, pos);
     }
-    public void playRemove() {
-        play(remove);
+    public void playRemove(Vector3 pos) {
+        play(remove, pos);
     }
 
-    void play(AudioClip clip) {
+    public void playMagic(Vector3 pos) {
+        magicObj = play(magic, pos);
+        magicObj.GetComponent<AudioSource>().loop = true;
+    }
+    public void stopMagic() {
+        Destroy(magicObj);
+    }
+
+    GameObject play(AudioClip clip, Vector3 pos) {
+        GameObject obj = new GameObject();
+        obj.transform.position = pos;
+        obj.AddComponent<AudioSource>();
+        AudioSource source = obj.GetComponent<AudioSource>();
+
         source.Stop();
         source.clip = clip;
         source.Play();
+        return obj;
     }
 }

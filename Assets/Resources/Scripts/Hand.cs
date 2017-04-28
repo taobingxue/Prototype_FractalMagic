@@ -23,7 +23,7 @@ public class Hand : MonoBehaviour {
         update_status();
 
 		if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick) || OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick)) {
-            SoundAudio.instance.playRemove();
+            SoundAudio.instance.playRemove(transform.position);
 			fractal_generator.clean_up();
 		}
     }
@@ -44,13 +44,18 @@ public class Hand : MonoBehaviour {
     // trigger operation
     void trigger_grab(bool status) {
         if (last_status == false && status && active_element != null) {
-            SoundAudio.instance.playGrab();
             MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
             GameObject new_obj = Instantiate(MagicElements.instance.valid_elements[active_element_function.idx].model_prefab) as GameObject;
             new_obj.transform.parent = transform;
             new_obj.transform.localPosition = Vector3.zero;
             grabed = new_obj;
             grabed_idx = active_element_function.idx;
+
+            if (grabed_idx != MagicElements.instance.main_function_idx) {
+                SoundAudio.instance.playGrab(transform.position);
+            } else {
+                SoundAudio.instance.playMagic(transform.position);
+            }
         }
     }
 
@@ -61,7 +66,8 @@ public class Hand : MonoBehaviour {
                 int[] magic_spell = MagicElements.instance.get_spell();
 
                 string a = "";
-                for (int i = 0; i < 10; ++i) {
+                for (int i = 0; i < 10; ++i)
+                {
                     a += " " + magic_spell[i];
                 }
                 Debug.Log("magic_spell" + a);
@@ -73,15 +79,21 @@ public class Hand : MonoBehaviour {
                 fractal_generator.GetComponent<Fractal>().generateFractalsFromIndices(magic_spell);
                 */
 
+                SoundAudio.instance.stopMagic();
                 fractal_generator.bloom(transform.position, magic_spell);
-            } else if (active_element == null) {
-                // release to the sky
-                Debug.Log("You release it to nothing!");
             } else {
-                // release to a function
-                MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
-                active_element_function.extend_function(MagicElements.instance.valid_elements[grabed_idx]);
-                SoundAudio.instance.playRelease();
+                SoundAudio.instance.playRelease(transform.position);
+                if (active_element == null)
+                {
+                    // release to the sky
+                    Debug.Log("You release it to nothing!");
+                }
+                else
+                {
+                    // release to a function
+                    MagicFunction active_element_function = active_element.GetComponent<MagicFunction>();
+                    active_element_function.extend_function(MagicElements.instance.valid_elements[grabed_idx]);
+                }
             }
 
             Destroy(grabed);
